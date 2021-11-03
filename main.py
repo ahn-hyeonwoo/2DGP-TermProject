@@ -19,6 +19,7 @@ class Will:
         self.rolling = False
         self.roll_count = 0
         self.frame = 0
+        self.fchange = 35
     
     def draw(self):
         if self.rolling:
@@ -38,6 +39,7 @@ class Will:
                 self.roll_count = 0
                 self.rolling = False
                 self.frame = 0
+                self.fchange = 35
 
     def update(self):
         if self.dir_side != 0 or self.dir_updown != 0: self.walking = True
@@ -70,9 +72,9 @@ class Will:
         if not noDir:
             if self.rolling:
                 if self.roll_count < 1:
-                    r = 0.25
-                elif self.roll_count < 6:
-                    r = 0.30
+                    r = 0.2
+                elif self.roll_count < 7:
+                    r = 0.40
                 else:
                     r = 0.20
                 self.x += r * math.cos(s/360*2*math.pi)
@@ -108,6 +110,7 @@ def handle_events():
                     will.rolling = True
                     will.frame = 0
                     will.roll_count = 0
+                    will.fchange = 25
                     t = 0
             elif event.key == SDLK_ESCAPE:
                 running = False
@@ -137,7 +140,7 @@ while running:
 
     will.update()
 
-    if t > 50:
+    if t > will.fchange:
         will.frame_update()
         t = 0
     
