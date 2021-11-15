@@ -2,6 +2,9 @@ from pico2d import *
 import math
 
 
+import babyslime
+
+
 class Will:
     def __init__(self):
         self.image_stand = load_image('will_stand.png')
@@ -130,6 +133,8 @@ background = load_image('background.png')
 will = Will()
 running = True
 
+babyslime_test = babyslime.BabySlime()
+
 t = 0
 while running:
     t += 1
@@ -144,6 +149,11 @@ while running:
         will.frame_update()
         t = 0
     
+    # MOBS
+    babyslime_test.update(will.x, will.y)
+    babyslime_test.draw()
+
+
     update_canvas()
     handle_events()
     delay(0.0001)
