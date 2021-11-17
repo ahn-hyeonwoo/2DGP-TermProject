@@ -119,3 +119,18 @@ if __name__ == '__main__':
             else: print(' ', end='')
             print(' ', end='')
         print()
+
+
+def is_will_enter_door(x, y):
+    if x >= 560//2 - 20 and x <= 560//2 + 20: 
+        if y >= 340 and y <= 360: 
+            return 1
+        elif y >= 0 and y <= 20: 
+            return 2
+    elif x >= 0 and x <= 20: 
+        if y >= 360//2 - 20 and y <= 360//2 + 20: 
+            return 3
+    elif x >= 540 and x <= 560: 
+        if y >= 360//2 - 20 and y <= 360//2 + 20: 
+            return 4
+    return 0

@@ -168,6 +168,26 @@ while running:
     update_canvas()
     handle_events()
 
+    # 추후 충돌처리로 구현
+    enter_map = map.is_will_enter_door(will.x, will.y)
+    if enter_map > 0:
+        if enter_map == 1:
+            map.cur_y += 1
+            will.x = 560//2
+            will.y = 30
+        if enter_map == 2:
+            map.cur_y += -1
+            will.x = 560//2
+            will.y = 330
+        if enter_map == 3:
+            map.cur_x += -1
+            will.x = 530
+            will.y = 360//2
+        if enter_map == 4:
+            map.cur_x += 1
+            will.x = 30
+            will.y = 360//2
+
     frame_time = time.time() - current_time
     current_time += frame_time
 
