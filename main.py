@@ -5,7 +5,7 @@ import time
 import game_world
 import babyslime
 
-
+import map
 
 
 class Will:
@@ -128,6 +128,10 @@ def handle_events():
 
 open_canvas(580, 360, True)
 background = load_image('background.png')
+door_up = load_image('objects/door/up/door_up_1.png')
+door_down = load_image('objects/door/down/door_down_1.png')
+door_left = load_image('objects/door/left/door_left_1.png')
+door_right = load_image('objects/door/right/door_right_1.png')
 will = Will()
 running = True
 
@@ -139,6 +143,15 @@ current_time = time.time() - frame_time
 while running: 
     clear_canvas()
     background.draw(580//2, 360//2)
+
+    if map.Rooms[(map.cur_x + map.cur_y * 7)].up_door: 
+        door_up.draw(580//2, 340)
+    if map.Rooms[(map.cur_x + map.cur_y * 7)].down_door: 
+        door_down.draw(580//2, 20)
+    if map.Rooms[(map.cur_x + map.cur_y * 7)].left_door: 
+        door_left.draw(20, 360//2)
+    if map.Rooms[(map.cur_x + map.cur_y * 7)].right_door: 
+        door_right.draw(560, 360//2)
 
     will.draw()
 
