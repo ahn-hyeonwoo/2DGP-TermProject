@@ -1,8 +1,11 @@
 from pico2d import *
 import math
+import time
 
-
+import game_world
 import babyslime
+
+
 
 
 class Will:
@@ -20,29 +23,24 @@ class Will:
         self.dir_updown = 0
         self.walking = False
         self.rolling = False
-        self.roll_count = 0
         self.frame = 0
-        self.fchange = 35
     
     def draw(self):
         if self.rolling:
-            self.image_roll.clip_draw(self.frame * 35, 35 * self.direction, 35, 35, self.x, self.y)
+            self.image_roll.clip_draw(int(self.frame) * 35, 35 * self.direction, 35, 35, self.x, self.y)
         elif self.walking:
-            self.image_walk.clip_draw(self.frame * 35, 35 * self.direction, 35, 35, self.x, self.y)
+            self.image_walk.clip_draw(int(self.frame) * 35, 35 * self.direction, 35, 35, self.x, self.y)
         else:
-            self.image_stand.clip_draw(self.frame * 35, 35 * self.direction, 35, 35, self.x, self.y)
+            self.image_stand.clip_draw(int(self.frame) * 35, 35 * self.direction, 35, 35, self.x, self.y)
     
     def frame_update(self):
         max = 10
         if self.walking or self.rolling: max = 8
-        self.frame = (self.frame + 1) % max
-        if self.rolling: 
-            self.roll_count += 1
-            if(self.roll_count > 7):
-                self.roll_count = 0
-                self.rolling = False
-                self.frame = 0
-                self.fchange = 35
+        # self.frame = (self.frame + 1) % max
+        self.frame = (self.frame + 0.2)
+        if self.rolling and self.frame >= 8: 
+            self.rolling = False
+        self.frame = self.frame % max
 
     def update(self):
         if self.dir_side != 0 or self.dir_updown != 0: self.walking = True
@@ -71,15 +69,15 @@ class Will:
                 noDir = True
             pass
         
-        r = 0.25
+        r = 3.2 # 0.25
         if not noDir:
             if self.rolling:
-                if self.roll_count < 1:
-                    r = 0.2
-                elif self.roll_count < 7:
-                    r = 0.40
+                if self.frame < 1:
+                    r = 2.56
+                elif self.frame < 7:
+                    r = 5.12
                 else:
-                    r = 0.20
+                    r = 2.56
                 self.x += r * math.cos(s/360*2*math.pi)
                 self.y += r * math.sin(s/360*2*math.pi)
             elif self.walking:
@@ -128,16 +126,17 @@ def handle_events():
                 will.dir_updown += 1
 
 
-open_canvas(580, 360)
+open_canvas(580, 360, True)
 background = load_image('background.png')
 will = Will()
 running = True
 
 babyslime_test = babyslime.BabySlime()
+game_world.add_object(babyslime_test, 1)
 
-t = 0
-while running:
-    t += 1
+frame_time = time.time()
+current_time = time.time() - frame_time
+while running: 
     clear_canvas()
     background.draw(580//2, 360//2)
 
@@ -145,19 +144,19 @@ while running:
 
     will.update()
 
-    if t > will.fchange:
-        will.frame_update()
-        t = 0
+    will.frame_update()
     
     # MOBS
-    babyslime_test.update(will.x, will.y)
-    babyslime_test.draw()
-
+    game_world.will_pos_update(will.x, will.y)
+    for game_object in game_world.all_objects(): 
+        game_object.update()
+        game_object.draw()
 
     update_canvas()
     handle_events()
-    delay(0.0001)
-    pass
+
+    frame_time = time.time() - current_time
+    current_time += frame_time
 
 
 close_canvas()
