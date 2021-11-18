@@ -156,11 +156,14 @@ while running:
     will.draw()
 
     will.update()
+    will.x = clamp(20, will.x, 540)
+    will.y = clamp(20, will.y, 340)
+
 
     will.frame_update()
     
     # MOBS
-    game_world.will_pos_update(will.x, will.y)
+    game_world.will_pos_update(will.x, will.y) 
     for game_object in game_world.all_objects(): 
         game_object.update()
         game_object.draw()
@@ -171,19 +174,19 @@ while running:
     # 추후 충돌처리로 구현
     enter_map = map.is_will_enter_door(will.x, will.y)
     if enter_map > 0:
-        if enter_map == 1:
+        if enter_map == 1 and map.Rooms[map.cur_x + map.cur_y * 7].up_door == True:
             map.cur_y += 1
             will.x = 560//2
             will.y = 30
-        if enter_map == 2:
+        if enter_map == 2 and map.Rooms[map.cur_x + map.cur_y * 7].down_door == True:
             map.cur_y += -1
             will.x = 560//2
             will.y = 330
-        if enter_map == 3:
+        if enter_map == 3 and map.Rooms[map.cur_x + map.cur_y * 7].left_door == True:
             map.cur_x += -1
             will.x = 530
             will.y = 360//2
-        if enter_map == 4:
+        if enter_map == 4 and map.Rooms[map.cur_x + map.cur_y * 7].right_door == True:
             map.cur_x += 1
             will.x = 30
             will.y = 360//2
