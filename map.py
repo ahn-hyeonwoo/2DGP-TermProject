@@ -1,4 +1,5 @@
 from random import randint
+import server
 
 class Room: 
     def __init__(self):
@@ -122,15 +123,18 @@ if __name__ == '__main__':
 
 
 def is_will_enter_door(x, y):
-    if x >= 560//2 - 20 and x <= 560//2 + 20: 
-        if y >= 340 and y <= 360: 
+    w, h = server.canvas_size.x, server.canvas_size.y
+    min_x, max_x = server.background.min_x, server.background.max_x
+    min_y, max_y = server.background.min_y, server.background.max_y
+    if x >= w//2 - 200 and x <= w//2 + 200: 
+        if y >= max_y - 10 and y <= max_y: 
             return 1
-        elif y >= 0 and y <= 20: 
+        elif y >= min_y and y <= min_y + 10: 
             return 2
-    elif x >= 0 and x <= 20: 
-        if y >= 360//2 - 20 and y <= 360//2 + 20: 
+    elif x >= min_x and x <= min_x + 10: 
+        if y >= h//2 - 200 and y <= h//2 + 200: 
             return 3
-    elif x >= 540 and x <= 560: 
-        if y >= 360//2 - 20 and y <= 360//2 + 20: 
+    elif x >= max_x - 10 and x <= max_x: 
+        if y >= h//2 - 200 and y <= h//2 + 200: 
             return 4
     return 0

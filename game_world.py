@@ -1,8 +1,8 @@
 
 # layer 0: Background Objects
 # layer 1: Foreground Objects
-objects = [[],[]]
-will_x, will_y = 0, 0
+objects = [[],[],[]]
+
 
 def add_object(o, layer):
     objects[layer].append(o)
@@ -37,8 +37,3 @@ def all_objects():
         for o in objects[i]:
             yield o
 
-
-def will_pos_update(x, y): 
-    global will_x, will_y
-    will_x = x
-    will_y = y
